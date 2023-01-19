@@ -1,0 +1,23 @@
+button {
+	padding: 7.5px 8.5px;
+    font-size: 13px;
+	font-weight: bold;
+    text-transform: uppercase;
+	letter-spacing: 1px;
+	margin-right: 10px;
+	border: 1px solid rgba(0, 0, 0, 0.075);
+	border-radius: 0;
+	background: rgb(76, 90, 97);
+	color: rgb(255, 255, 255);
+}
+button.full-width {
+	width: 100%;
+}
+button.primary {
+	color: rgb(255, 255, 255);
+	background: rgb(76, 90, 97);
+}
+button:hover {
+	opacity: 0.85;
+	transition: opacity 0.5s ease;
+}
