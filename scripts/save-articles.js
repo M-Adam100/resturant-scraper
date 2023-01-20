@@ -48,32 +48,37 @@ console.log('Running Script')
   
         const doc = parser.parseFromString(productResponseText, 'text/html')
   
-        const rank = doc.querySelector('.AYHFM').querySelector('span')
-  
-        ARR.push({
-          'Resturant Name': doc.querySelector(
-            'h1[data-test-target="top-info-header"]',
-          )?.innerText || "N/A",
-          Reviews: articleData?.aggregateRating?.reviewCount || "N/A",
-          'Average Review Rating': articleData?.aggregateRating?.ratingValue || "N/A",
-          Ranking: rank
-            ?.querySelector('b')
-            .innerText.replaceAll('.', '')
-            .replace('N', '')
-            .replace('#', '') || "N/A",
-          'Total Resturants': rank?.innerText
-            .split('di')
-            .pop()
-            .split('ris')[0]
-            .trim()
-            .replace('.', '') || "N/A",
-          'Street Address': articleData?.address?.streetAddress || "N/A",
-          Email:
-            doc
-              .querySelector('a[href*="mailto"]')
-              ?.href.match('mailto:([^?]*)')[1] || 'Email not present',
-          'Resturant Url': href,
-        })
+        const rank = doc.querySelector('.AYHFM').querySelector('span');
+
+        const email =  doc
+        .querySelector('a[href*="mailto"]')
+        ?.href.match('mailto:([^?]*)')[1];
+
+        if (email) {
+          ARR.push({
+            'Resturant Name': doc.querySelector(
+              'h1[data-test-target="top-info-header"]',
+            )?.innerText || "N/A",
+            Reviews: articleData?.aggregateRating?.reviewCount || "N/A",
+            'Average Review Rating': articleData?.aggregateRating?.ratingValue || "N/A",
+            Ranking: Number(rank
+              ?.querySelector('b')
+              .innerText.replaceAll('.', '')
+              .replace('N', '')
+              .replace('#', '')) || "N/A",
+            'Total Resturants': rank?.innerText
+              .split('di')
+              .pop()
+              .split('ris')[0]
+              .trim()
+              .replace('.', '') || "N/A",
+            'Street Address': doc.querySelector('a[href*="MAP"]').innerText.split(',')[0].trim() || "N/A",
+            Email:
+              doc
+                .querySelector('a[href*="mailto"]')
+                ?.href.match('mailto:([^?]*)')[1] || 'Email not present'
+          })
+        } else total--;
   
         console.log('Articles Parsed: ', ARR.length);
       } catch (error) {
@@ -85,8 +90,9 @@ console.log('Running Script')
 
     if (ARR.length >= total ) {
       pageNum++;
-      if (pageNum >= Number(number)) {
-        document.querySelector('#nihao-loader')?.remove()
+      if (pageNum > Number(number)) {
+        document.querySelector('#nihao-loader')?.remove();
+        ARR.sort((a,b) => a.Ranking - b.Ranking); 
         exportPosts(ARR)
       } else {
         document.querySelector('a.nav.next').click();
