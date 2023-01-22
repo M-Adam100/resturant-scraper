@@ -112,7 +112,8 @@ console.log('Running Script')
           .children,
       ]
 
-      articles = articles.filter((item) => !item.className)
+      articles = articles.filter((item) => !item.className);
+      articles = articles.filter(item => !item.innerText.contains('Sponsorizzato');
       total = total + articles.length
       console.log('Total Articles: ', total)
       const chunkSize = 4;
