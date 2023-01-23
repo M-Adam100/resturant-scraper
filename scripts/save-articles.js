@@ -1,6 +1,6 @@
 console.log('Running Script')
 
-;(async () => {
+(async () => {
   const loader = document.createElement('div')
   loader.className = 'loader'
   loader.id = 'nihao-loader'
@@ -114,7 +114,7 @@ console.log('Running Script')
       ]
 
       articles = articles.filter((item) => !item.className);
-      articles = articles.filter(item => !item.innerText.contains('Sponsorizzato');
+      articles = articles.filter(item => !item.innerText.includes('Sponsorizzato'));
       total = total + articles.length
       console.log('Total Articles: ', total)
       const chunkSize = 4;
@@ -158,4 +158,4 @@ console.log('Running Script')
   }
 
   startWorking()
-})()
+})();
