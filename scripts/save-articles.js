@@ -73,6 +73,7 @@ console.log('Running Script')
               .trim()
               .replace('.', '') || "N/A",
             'Street Address': doc.querySelector('a[href*="MAP"]').innerText.split(',')[0].trim() || "N/A",
+            'City':  doc.querySelector('.AYHFM').querySelector('span').innerText.split(' ').pop(),
             Email:
               doc
                 .querySelector('a[href*="mailto"]')
