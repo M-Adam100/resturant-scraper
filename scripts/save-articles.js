@@ -1,4 +1,4 @@
-console.log('Running Script')
+console.log('Running Script');
 
 (async () => {
   const loader = document.createElement('div')
@@ -115,8 +115,8 @@ console.log('Running Script')
 
       articles = articles.filter((item) => !item.className);
       articles = articles.filter(item => !item.innerText.includes('Sponsorizzato'));
-      total = total + articles.length
-      console.log('Total Articles: ', total)
+      total = total + articles.length;
+      console.log('Total Articles: ', total);
       const chunkSize = 4;
       for (let i = 0; i < articles.length; i += chunkSize) {
         const chunk = articles.slice(i, i + chunkSize);
