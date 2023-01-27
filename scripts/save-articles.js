@@ -49,39 +49,44 @@ console.log('Running Script');
         const doc = parser.parseFromString(productResponseText, 'text/html')
   
         const rank = doc.querySelector('.AYHFM').querySelector('span');
+        const totalRes = Number(rank?.innerText
+          .split('di')
+          .pop()
+          .split('ris')[0]
+          .trim()
+          .replace('.', ''));
 
-        const email =  doc
-        .querySelector('a[href*="mailto"]')
-        ?.href.match('mailto:([^?]*)')[1];
+          if (!isNaN(totalRes)) {
+            const email =  doc
+            .querySelector('a[href*="mailto"]')
+            ?.href.match('mailto:([^?]*)')[1];
+    
+            if (email) {
+              ARR.push({
+                'Resturant Name': doc.querySelector(
+                  'h1[data-test-target="top-info-header"]',
+                )?.innerText || "N/A",
+                Reviews: articleData?.aggregateRating?.reviewCount || "N/A",
+                'Average Review Rating': articleData?.aggregateRating?.ratingValue || "N/A",
+                Ranking: Number(rank
+                  ?.querySelector('b')
+                  .innerText.replaceAll('.', '')
+                  .replace('N', '')
+                  .replace('#', '')) || "N/A",
+                'Total Resturants': totalRes || "N/A",
+                'Street Address': doc.querySelector('a[href*="MAP"]').innerText.split(',')[0].trim() || "N/A",
+                'City':  doc.querySelector('.AYHFM').querySelector('span').innerText.split(' ').pop(),
+                Email:
+                  doc
+                    .querySelector('a[href*="mailto"]')
+                    ?.href.match('mailto:([^?]*)')[1] || 'Email not present'
+              })
+            } else total--;
+      
+            console.log('Articles Parsed: ', ARR.length);
+          }
 
-        if (email) {
-          ARR.push({
-            'Resturant Name': doc.querySelector(
-              'h1[data-test-target="top-info-header"]',
-            )?.innerText || "N/A",
-            Reviews: articleData?.aggregateRating?.reviewCount || "N/A",
-            'Average Review Rating': articleData?.aggregateRating?.ratingValue || "N/A",
-            Ranking: Number(rank
-              ?.querySelector('b')
-              .innerText.replaceAll('.', '')
-              .replace('N', '')
-              .replace('#', '')) || "N/A",
-            'Total Resturants': rank?.innerText
-              .split('di')
-              .pop()
-              .split('ris')[0]
-              .trim()
-              .replace('.', '') || "N/A",
-            'Street Address': doc.querySelector('a[href*="MAP"]').innerText.split(',')[0].trim() || "N/A",
-            'City':  doc.querySelector('.AYHFM').querySelector('span').innerText.split(' ').pop(),
-            Email:
-              doc
-                .querySelector('a[href*="mailto"]')
-                ?.href.match('mailto:([^?]*)')[1] || 'Email not present'
-          })
-        } else total--;
-  
-        console.log('Articles Parsed: ', ARR.length);
+     
       } catch (error) {
         total--;
         console.log(error);
