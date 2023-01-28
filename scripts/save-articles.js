@@ -4,7 +4,8 @@ console.log('Running Script');
   const loader = document.createElement('div')
   loader.className = 'loader'
   loader.id = 'nihao-loader'
-  let pageNum = 1
+  let pageNum = 1;
+  let coveredArticles = 0;
   const { number } = await chrome.storage.local.get(['number']);
 
   if (!document.querySelector('#nihao-loader')) {
@@ -28,6 +29,7 @@ console.log('Running Script');
   let total = 0
   const coverArticles = async (pins) => {
     for (let i = 0; i < pins.length; i++) {
+      coveredArticles++;
       try {
         const item = pins[i];
         const href = item.querySelector('a').href
@@ -55,6 +57,8 @@ console.log('Running Script');
           .split('ris')[0]
           .trim()
           .replace('.', ''));
+
+          console.log(`Covered Articles on Page: ${pageNum} is ${coveredArticles}  `)
 
           if (!isNaN(totalRes)) {
             const email =  doc
@@ -94,8 +98,9 @@ console.log('Running Script');
     
     }
 
-    if (ARR.length >= total ) {
+    if (coveredArticles >= 30) {
       pageNum++;
+      coveredArticles = 0;
       if (pageNum > Number(number)) {
         document.querySelector('#nihao-loader')?.remove();
         ARR.sort((a,b) => a.Ranking - b.Ranking); 
